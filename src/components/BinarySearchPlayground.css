@@ -1,0 +1,99 @@
+/* BinarySearchPlayground — reuses lsp-root, lsp-body, lsp-target-row,
+   playground-header, editor-col, playground-viz, pg-stats, pg-controls
+   from LinearSearchPlayground.css and CodePlayground.css */
+
+/* ── Pointer row ── */
+.bsp-ptr-row {
+  display: flex;
+  gap: 4px;
+}
+
+.bsp-ptr-slot {
+  width: 38px;
+  min-height: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bsp-ptr-mid {
+  font-size: 0.58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: #fef9c3;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* ── Box row ── */
+.bsp-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bsp-box {
+  width: 38px;
+  height: 44px;
+  border-radius: 8px;
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  flex-shrink: 0;
+}
+
+.bsp-val {
+  font-size: 0.76rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.bsp-idx {
+  font-size: 0.54rem;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+/* States */
+.bsp-candidate {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.bsp-mid {
+  background: #fef9c3;
+  border-color: #f59e0b;
+  color: #92400e;
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 5px 16px rgba(245, 158, 11, 0.35);
+  z-index: 1;
+}
+
+.bsp-found {
+  background: #dcfce7;
+  border-color: #4ade80;
+  color: #15803d;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.4);
+  transform: translateY(-3px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .bsp-box      { width: 30px; height: 36px; }
+  .bsp-val      { font-size: 0.66rem; }
+  .bsp-idx      { display: none; }
+  .bsp-ptr-slot { width: 30px; }
+}

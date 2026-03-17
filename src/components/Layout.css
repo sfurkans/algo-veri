@@ -1,0 +1,17 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+.layout-main {
+  flex: 1;
+  overflow-x: hidden;
+  max-width: 100vw;
+  padding-top: 76px; /* navbar yüksekliği */
+}
+
+@media (max-width: 768px) {
+  .layout-main { padding-top: 64px; }
+}

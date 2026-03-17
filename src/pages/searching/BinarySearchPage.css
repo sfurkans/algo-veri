@@ -1,0 +1,381 @@
+/* ════════════════════════════════════════════════
+   BINARY SEARCH — KUTU GÖRSELLEŞTİRİCİ
+════════════════════════════════════════════════ */
+
+.bs-viz-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 20px 16px 16px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Box row ── */
+.bs-box-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.bs-box {
+  width: 38px;
+  height: 52px;
+  border-radius: 8px;
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 6px;
+  gap: 0;
+  transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* ── Pointer tags inside boxes ── */
+.bs-box-tags {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  min-height: 14px;
+}
+
+.bs-tag {
+  font-size: 0.52rem;
+  font-weight: 900;
+  padding: 1px 3px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.bs-tag-low  { background: #dbeafe; color: #1d4ed8; }
+.bs-tag-mid  { background: #fef9c3; color: #92400e; }
+.bs-tag-high { background: #fce7f3; color: #9d174d; }
+
+.bs-val {
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* States */
+.bs-candidate {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.bs-mid {
+  background: #fef9c3;
+  border-color: #f59e0b;
+  color: #92400e;
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
+  z-index: 1;
+}
+
+.bs-found {
+  background: #dcfce7;
+  border-color: #4ade80;
+  color: #15803d;
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.4);
+  transform: translateY(-3px);
+}
+
+.bs-eliminated {
+  background: rgba(148, 163, 184, 0.05);
+  border-color: rgba(148, 163, 184, 0.15);
+  color: var(--text-muted);
+  opacity: 0.35;
+}
+
+/* ── Legend ── */
+.bs-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.bs-leg {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.bs-leg-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  border: 2px solid;
+}
+
+.bs-leg-mid       { background: #fef9c3; border-color: #f59e0b; }
+.bs-leg-found     { background: #dcfce7; border-color: #4ade80; }
+.bs-leg-candidate { background: var(--bg); border-color: var(--border); }
+.bs-leg-eliminated{ background: rgba(148,163,184,0.08); border-color: rgba(148,163,184,0.2); }
+
+/* ── Remaining bar override ── */
+.bs-remaining-fill {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+/* ════════════════════════════════════════════════
+   N SEÇİCİ (sağ panel — log n grafiği)
+════════════════════════════════════════════════ */
+.bs-n-select-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.bs-n-select-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+}
+
+.bs-n-select-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ── Özel dropdown ── */
+.bs-custom-select {
+  position: relative;
+}
+
+.bs-custom-select-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 90px;
+  justify-content: space-between;
+}
+
+.bs-custom-select-btn:hover,
+.bs-custom-select-btn:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.bs-select-arrow {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: transform 0.15s;
+  display: inline-block;
+}
+
+.bs-arrow-up {
+  transform: rotate(180deg);
+}
+
+.bs-custom-select-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  list-style: none;
+  z-index: 200;
+  overflow: hidden;
+  animation: dropDown 0.12s ease;
+}
+
+@keyframes dropDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bs-custom-select-item {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+
+.bs-custom-select-item:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.bs-custom-select-item.bs-select-active {
+  background: var(--primary);
+  color: white;
+}
+
+/* ── Karşılaştırma widget'ı ── */
+.bs-logn-compare {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.bs-logn-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.bs-logn-algo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.bs-logn-steps-bad {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #dc2626;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Courier New', monospace;
+  line-height: 1.1;
+}
+
+.bs-logn-steps-good {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #059669;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Courier New', monospace;
+  line-height: 1.1;
+}
+
+.bs-logn-unit {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.bs-logn-vs {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ════════════════════════════════════════════════
+   HALVING VISUAL
+════════════════════════════════════════════════ */
+.bs-halving {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.bs-halving-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bs-halving-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-width: 66px;
+  font-weight: 600;
+}
+
+.bs-halving-track {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bs-halving-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  transition: width 0.3s ease;
+}
+
+.bs-halving-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .bs-box  { width: 34px; height: 48px; }
+  .bs-val  { font-size: 0.72rem; }
+  .bs-box-row { gap: 4px; }
+}
+
+@media (max-width: 600px) {
+  .bs-box  { width: 28px; height: 42px; border-radius: 6px; }
+  .bs-val  { font-size: 0.62rem; }
+  .bs-tag  { font-size: 0.44rem; padding: 1px 2px; }
+  .bs-box-row { gap: 3px; }
+}
+
+@media (max-width: 480px) {
+  .bs-box  { width: 22px; height: 36px; border-radius: 4px; }
+  .bs-val  { font-size: 0.54rem; }
+  .bs-tag  { font-size: 0.38rem; padding: 1px 2px; }
+  .bs-box-row { gap: 2px; }
+
+  .bs-viz-card { padding: 14px 10px 12px; }
+
+  .bs-logn-compare { padding: 10px 12px; gap: 8px; }
+  .bs-logn-steps-bad,
+  .bs-logn-steps-good { font-size: 1.2rem; }
+
+  .bs-halving { padding: 10px; }
+  .bs-halving-label { min-width: 52px; font-size: 0.65rem; }
+
+  .bs-n-select-label { font-size: 0.78rem; }
+  .bs-n-select-hint  { font-size: 0.7rem; }
+  .bs-custom-select-btn { padding: 5px 8px; font-size: 0.78rem; min-width: 72px; }
+}

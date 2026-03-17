@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npx vite:*)",
+      "Bash(\"C:\\\\temel-pc-website\\\\src\\\\pages\\\\data-structures\\\\LinkedList.jsx\":*)",
+      "Bash(npx react-scripts:*)",
+      "Bash(npx eslint:*)",
+      "Bash(node:*)",
+      "Bash(while read f)",
+      "Bash(do echo \"=== $f ===\")",
+      "Read(//c/algoritma-veri-web/**)",
+      "Bash(done)",
+      "Bash(findstr:*)"
+    ]
+  }
+}

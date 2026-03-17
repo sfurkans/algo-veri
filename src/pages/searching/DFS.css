@@ -1,0 +1,579 @@
+/* ════════════════════════════════════════════════════════
+   DFS SAYFASI — ÖZEL STİLLER
+════════════════════════════════════════════════════════ */
+
+/* ── Operasyon Banner ─────────────────────────────────── */
+.dfs-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid transparent;
+  animation: dfsBannerIn 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 64px;
+}
+
+@keyframes dfsBannerIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.dfs-banner-icon {
+  font-size: 1.4rem;
+  width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+  font-family: 'Courier New', monospace;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.dfs-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.dfs-banner-op {
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+  line-height: 1.2;
+}
+
+.dfs-banner-sub {
+  font-size: 0.78rem;
+  font-weight: 500;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+/* Banner renk temaları */
+.dfs-banner-idle  { background: var(--bg); border-color: var(--border); color: var(--text-muted); }
+.dfs-banner-push  { background: #dbeafe; border-color: #93c5fd; color: #1e3a8a; }
+.dfs-banner-pop   { background: #e0e7ff; border-color: #a5b4fc; color: #312e81; }
+.dfs-banner-check { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.dfs-banner-skip  { background: #f1f5f9; border-color: #cbd5e1; color: #475569; }
+.dfs-banner-done  { background: #dcfce7; border-color: #86efac; color: #14532d; }
+
+/* ── SVG Canvas ───────────────────────────────────────── */
+.dfs-canvas-wrap {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+}
+
+.dfs-svg {
+  display: block;
+  width: 100%;
+  height: 340px;
+  user-select: none;
+}
+
+/* ── Kenarlar ─────────────────────────────────────────── */
+.dfs-edge {
+  stroke-width: 2;
+  fill: none;
+  transition: stroke 0.25s, stroke-width 0.25s;
+}
+
+.dfs-edge-default  { stroke: #cbd5e1; }
+.dfs-edge-checking { stroke: #f59e0b; stroke-width: 2.5; }
+.dfs-edge-tree     { stroke: #4338ca; stroke-width: 2.5; }
+.dfs-edge-back     { stroke: #fca5a5; stroke-dasharray: 5 3; }
+
+/* ── Düğümler ─────────────────────────────────────────── */
+.dfs-node-group {
+  transition: opacity 0.15s;
+}
+
+.dfs-node {
+  transition: fill 0.25s, stroke 0.25s, stroke-width 0.2s;
+}
+
+.dfs-node-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  fill: #334155;
+  pointer-events: none;
+  font-family: 'Courier New', monospace;
+}
+
+.dfs-start-tag {
+  font-size: 0.6rem;
+  fill: #4338ca;
+  font-weight: 600;
+  font-family: inherit;
+  pointer-events: none;
+}
+
+/* ── Renk Açıklaması ──────────────────────────────────── */
+.dfs-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px 0 2px;
+}
+
+.dfs-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.dfs-legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.dleg-unvisited { background: #f8fafc; border-color: #94a3b8; }
+.dleg-stacked   { background: #dbeafe; border-color: #3b82f6; }
+.dleg-visiting  { background: #e0e7ff; border-color: #4338ca; }
+.dleg-visited   { background: #dcfce7; border-color: #22c55e; }
+
+.dfs-legend-label {
+  white-space: nowrap;
+}
+
+/* ── Yığın Görünümü ───────────────────────────────────── */
+.dfs-stack-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dfs-stack-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.dfs-stack-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.dfs-stack-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.dfs-stack-body {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  min-height: 36px;
+}
+
+.dfs-stack-empty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.dfs-stack-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dfs-stack-top {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #4338ca;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: 2px;
+}
+
+.dfs-stack-node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #dbeafe;
+  border: 2px solid #3b82f6;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  font-family: 'Courier New', monospace;
+}
+
+.dfs-stack-arrow {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ── Ziyaret Sırası ───────────────────────────────────── */
+.dfs-order-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.dfs-order-title {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.dfs-order-body {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  min-height: 36px;
+}
+
+.dfs-order-empty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.dfs-order-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.dfs-order-num {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 2px;
+  align-self: flex-start;
+}
+
+.dfs-order-node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #dcfce7;
+  border: 2px solid #22c55e;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #14532d;
+  font-family: 'Courier New', monospace;
+}
+
+.dfs-order-sep {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ── Accordion (Sağ Panel) ────────────────────────────── */
+.dfs-accordion {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-card);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dfs-accordion:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.dfs-acc-open {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.dfs-acc-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 12px;
+  transition: background 0.15s;
+}
+
+.dfs-acc-header:hover {
+  background: var(--bg);
+}
+
+.dfs-acc-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dfs-acc-chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dfs-acc-open .dfs-acc-chevron {
+  transform: rotate(180deg);
+}
+
+.dfs-acc-body {
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Nasıl Çalışır Listesi ────────────────────────────── */
+.dfs-how-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dfs-how-list li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Kenar Türleri ────────────────────────────────────── */
+.dfs-edges-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dfs-edge-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+}
+
+.dfs-ec-tree { background: #eef2ff; border-color: #c7d2fe; }
+.dfs-ec-back { background: #fff1f2; border-color: #fecdd3; }
+
+.dfs-ec-line {
+  display: inline-block;
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  background: #4338ca;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.dfs-ec-line-back {
+  background: repeating-linear-gradient(
+    90deg,
+    #fca5a5 0px,
+    #fca5a5 5px,
+    transparent 5px,
+    transparent 8px
+  );
+  height: 3px;
+}
+
+.dfs-ec-name {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.dfs-ec-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Karmaşıklık Grid ─────────────────────────────────── */
+.dfs-cmplx-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.dfs-cmplx-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  text-align: center;
+}
+
+.dfs-cmplx-cell.cmplx-time  { background: #e0e7ff; border-color: #a5b4fc; }
+.dfs-cmplx-cell.cmplx-space { background: #dbeafe; border-color: #93c5fd; }
+
+.dfs-cmplx-op {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.dfs-cmplx-cell.cmplx-time  .dfs-cmplx-op  { color: #3730a3; }
+.dfs-cmplx-cell.cmplx-space .dfs-cmplx-op  { color: #1e40af; }
+
+.dfs-cmplx-val {
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+}
+
+.dfs-cmplx-cell.cmplx-time  .dfs-cmplx-val { color: #3730a3; }
+.dfs-cmplx-cell.cmplx-space .dfs-cmplx-val { color: #1e40af; }
+
+.dfs-cmplx-sub {
+  font-size: 0.68rem;
+  opacity: 0.7;
+  line-height: 1.3;
+}
+
+.dfs-cmplx-cell.cmplx-time  .dfs-cmplx-sub { color: #3730a3; }
+.dfs-cmplx-cell.cmplx-space .dfs-cmplx-sub { color: #1e40af; }
+
+/* ── Başlangıç Hint ───────────────────────────────────── */
+.dfs-start-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Pseudocode header satırı ─────────────────────────── */
+.pseudo-header-line {
+  font-weight: 800;
+  color: var(--primary);
+  margin-top: 4px;
+}
+
+.pseudo-text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.pseudo-active .pseudo-text {
+  color: #92400e;
+  font-weight: 700;
+}
+
+/* ── Gerçek Hayatta ───────────────────────────────────── */
+.dfs-usage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dfs-usage-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.dfs-usage-icon {
+  font-size: 1.1rem;
+  width: 24px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.dfs-usage-text          { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+.dfs-usage-text strong   { color: var(--text-primary); }
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .dfs-cmplx-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dfs-svg {
+    height: 280px;
+  }
+
+  .dfs-banner {
+    padding: 10px 14px;
+    min-height: 52px;
+  }
+
+  .dfs-banner-op  { font-size: 0.82rem; }
+  .dfs-banner-sub { font-size: 0.72rem; }
+
+  .dfs-stack-wrap,
+  .dfs-order-wrap {
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dfs-svg {
+    height: 240px;
+  }
+
+  .dfs-banner {
+    padding: 8px 12px;
+    gap: 10px;
+    min-height: 44px;
+  }
+
+  .dfs-banner-icon { font-size: 1.1rem; width: 28px; }
+  .dfs-banner-op   { font-size: 0.75rem; }
+  .dfs-banner-sub  { font-size: 0.68rem; }
+
+  .dfs-stack-node,
+  .dfs-order-node {
+    width: 26px;
+    height: 26px;
+    font-size: 0.72rem;
+  }
+
+  .dfs-legend { gap: 10px; }
+  .dfs-legend-item { font-size: 0.68rem; }
+  .dfs-legend-dot  { width: 11px; height: 11px; }
+}
